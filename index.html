@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <style>
+        /* Estilo global */
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+
+        /* Contêiner da calculadora */
+        .calculator {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 320px;
+            transform: scale(1);
+            transition: transform 0.3s ease;
+        }
+
+        .calculator:hover {
+            transform: scale(1.02);
+        }
+
+        /* Visor da calculadora */
+        .display {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #result {
+            width: 100%;
+            height: 60px;
+            font-size: 1.8em;
+            text-align: right;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background: #f0f4f8;
+            color: #333;
+            box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Botões */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            height: 60px;
+            width: 100%;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #007BFF, #0056b3);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #0056b3, #003c8f);
+        }
+
+        /* Botões de funções especiais */
+        button.plus {
+            width: 150px;
+            left: 190px;
+            top: 400px;
+            background: linear-gradient(135deg, #ffc107, #ff8c00);
+            position: absolute;
+
+        }
+
+        button.plus:hover {
+            background: linear-gradient(135deg, #ff8c00, #ff6f00);
+        }
+
+        button.equals {
+            grid-column: span 2; /* Ocupa 2 colunas */
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+        }
+
+        button.equals:hover {
+            background: linear-gradient(135deg, #1e7e34, #145a24);
+        }
+
+        button.clear {
+            background: linear-gradient(135deg, #dc3545, #a71d2a);
+        }
+
+        button.clear:hover {
+            background: linear-gradient(135deg, #a71d2a, #7f131e);
+        }
+
+        /* Ajuste de tamanho para telas pequenas */
+        @media (max-width: 400px) {
+            .calculator {
+                width: 100%;
+                padding: 15px;
+            }
+
+            button {
+                height: 50px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <div class="display">
+            <input type="text" id="result" placeholder="0" disabled>
+        </div>
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button onclick="appendValue('/')">/</button>
+            <button onclick="appendValue('*')">*</button>
+            <button onclick="deleteLast()">⌫</button>
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button onclick="appendValue('-')">-</button>
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button class="plus" onclick="appendValue('+')">+</button>
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button class="equals" onclick="calculateResult()">=</button>
+            <button onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+        </div>
+    </div>
+    <script>
+        // Função para adicionar valores ao visor
+        function appendValue(value) {
+            const resultField = document.getElementById('result');
+            resultField.value += value;
+        }
+
+        // Função para limpar o visor
+        function clearDisplay() {
+            const resultField = document.getElementById('result');
+            resultField.value = '';
+        }
+
+        // Função para apagar o último caractere
+        function deleteLast() {
+            const resultField = document.getElementById('result');
+            resultField.value = resultField.value.slice(0, -1);
+        }
+
+        // Função para calcular o resultado
+        function calculateResult() {
+            const resultField = document.getElementById('result');
+            try {
+                resultField.value = eval(resultField.value) || '';
+            } catch (error) {
+                alert('Expressão inválida');
+                resultField.value = '';
+            }
+        }
+
+        self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open('meu-app-cache').then(cache => {
+      return cache.addAll([
+        '/',
+        '/index.html',
+        '/style.css',
+        '/app.js',
+        '/icon.png'
+      ]);
+    })
+  );
+});
+
+    </script>
+</body>
+</html>
